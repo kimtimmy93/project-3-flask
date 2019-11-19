@@ -1,5 +1,5 @@
 import models
-from flask import request, jsnoify, Blueprint
+from flask import request, jsonify, Blueprint
 from flask_bcrpyt import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user
 from playhouse.shortcuts import model_to_dict
@@ -45,3 +45,11 @@ def login():
         return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
+
+# PROFILE
+@user.route('/user/<username>', methods=["GET"])
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    
+
