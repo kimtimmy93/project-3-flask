@@ -11,8 +11,7 @@ PORT = 8002
 
 login_manager = LoginManager()
 
-# Initialize an instance of the Flask class.
-# This starts the website!
+
 app = Flask(__name__)
 
 app.secret_key = "thissisthesecretkey"
@@ -38,6 +37,8 @@ def after_request(response):
     g.db.close()
     return response
 
+CORS(event, origins=['http://localhost:3000'],
+supports_credentials=True)
 
 app.register_blueprint(event, url_prefix='/api/v1/events')
 
