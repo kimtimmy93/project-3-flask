@@ -23,7 +23,7 @@ class Event(Model):
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta: 
-        database = DATABASE
+        database = DATABASE 
 
 def initialize(): 
     DATABASE.connect()
