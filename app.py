@@ -3,7 +3,7 @@ from flask import Flask, g
 import models
 
 DEBUG = True
-PORT = 8000
+PORT = 8002
 
 # Initialize an instance of the Flask class.
 # This starts the website!
