@@ -44,7 +44,7 @@ app.register_blueprint(event, url_prefix='/api/v1/events')
 
 CORS(user, origins=['http://localhost:3000'],
 supports_credentials=True)
-ap.register_blueprint(user, url_prefix='/user')
+app.register_blueprint(user, url_prefix='/user')
 
 # Run the app when the program starts!
 if __name__ == '__main__':
