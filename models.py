@@ -5,10 +5,10 @@ from flask_login import UserMixin
 DATABASE = SqliteDatabase('events.sqlite')
 
 class User(UserMixin, Model):
-
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField()
+    is_admin = BooleanField
 
     class Meta:
         database = DATABASE
@@ -21,6 +21,7 @@ class Event(Model):
     location = CharField()
     tickets = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
+    
 
     class Meta: 
         database = DATABASE 
