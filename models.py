@@ -30,5 +30,5 @@ def initialize():
     DATABASE.create_tables([User, Event], safe=True) 
     print("TABLES Created")
     DATABASE.close()
- 
+
     
