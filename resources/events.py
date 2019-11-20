@@ -22,9 +22,13 @@ def get_all_events():
 @event.route('/', methods=["POST"])
 def create_events():
     payload = request.get_json()
+    print(payload, 'payload')
 
     event = models.Event.create(**payload)
 
+    print(dir(event))
+
+    print(model_to_dict(event))
     event_dict = model_to_dict(event)
     return jsonify(data=event_dict, status={"code": 201, "message": "Success"})
 

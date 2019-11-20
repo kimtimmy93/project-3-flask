@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, g
-from flask_cors import flask_CORS 
+from flask_cors import CORS
 from flask_login import LoginManager
 
 from resources.events import event
@@ -21,7 +21,7 @@ login_manager.init_app(app)
 def load_user(userId):
     try:
         return models.User.get(models.User.id == userId)
-    except: models.DoesNotExist:
+    except models.DoesNotExist:
         return None
 
 @app.before_request
@@ -37,12 +37,12 @@ def after_request(response):
     g.db.close()
     return response
 
-CORS(event, origins=['http://localhost:3000'],
+CORS(event, origins=['http://localhost:3001'],
 supports_credentials=True)
 
 app.register_blueprint(event, url_prefix='/api/v1/events')
 
-CORS(user, origins=['http://localhost:3000'],
+CORS(user, origins=['http://localhost:3001'],
 supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
 
