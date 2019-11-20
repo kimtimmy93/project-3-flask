@@ -40,9 +40,17 @@ def login():
             del user_dict['password']
             login_user(user)
             print(user)
+            if(payload['username'] == 'admin'):
+                print("IS HITTING")
+                user_dict['is_admin'] = True
             return jsonify(data=user_dict, status={"code": 200, "message": "user acquired"})
         else:
             return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
+
+
+       
+
+
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
 
