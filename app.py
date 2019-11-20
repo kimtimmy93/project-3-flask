@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from resources.events import event
 from resources.users import user
-import models 
+import models
 
 DEBUG = True
 PORT = 8000
@@ -27,6 +27,16 @@ def load_user(userId):
     except models.DoesNotExist:
         return None
 
+app.secret_key = "thissisthesecretkey"
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(userId):
+    try:
+        return models.User.get(models.User.id == userId)
+    except models.DoesNotExist:
+        return None
+
 @app.before_request
 def before_request():
     g.db = models.DATABASE
@@ -38,10 +48,14 @@ def after_request(response):
     g.db.close()
     return response
 
-@app.route('/', methods=["GET"])
-def get_home():
-    return 'this is home'
+CORS(event, origins=['http://localhost:3000'],
+supports_credentials=True)
 
+app.register_blueprint(event, url_prefix='/api/v1/events')
+
+CORS(user, origins=['http://localhost:3000'],
+supports_credentials=True)
+app.register_blueprint(user, url_prefix='/user')
 
 if __name__ == '__main__':
  
