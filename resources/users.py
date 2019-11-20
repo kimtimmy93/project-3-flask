@@ -41,7 +41,6 @@ def login():
             login_user(user)
             print(user)
             if(payload['username'] == 'admin'):
-                print("IS HITTING")
                 user_dict['is_admin'] = True
             return jsonify(data=user_dict, status={"code": 200, "message": "user acquired"})
         else:

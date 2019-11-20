@@ -13,7 +13,7 @@ def get_all_events():
     try: 
         events = [model_to_dict(event) for event in models.Event.select()]
 
-        print(events)
+        print(events, '<---events')
         return jsonify(data=events, status={"code": 200, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message":"Error getting the resource"})
@@ -46,6 +46,7 @@ def update_event(id):
     payload = request.get_json()
 
     query = models.Event.update(**payload).where(models.Event.id == id)
+    query.execute()
 
     event = models.Event.get_by_id(id)
 
@@ -53,4 +54,9 @@ def update_event(id):
 
     return jsonify(data=event_dict, status={"code": 200, "message": "resource updated successfully"})
 
-#Update, Edit, Delete for admin only
+# Delete
+@event.route('/<id>', methods=["DELETE"])
+def  delete_event(id):
+    query = models.Event.delete().where(models.Event.id==id)
+    query.execute()
+    return jsonify(data='resource successfully deleted', status={"code": 200, "message": "resource deleted successfully"})
