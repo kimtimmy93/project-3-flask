@@ -5,7 +5,7 @@ from resources.events import event
 import models
 
 DEBUG = True
-PORT = 8002
+PORT = 8000
 
 # Initialize an instance of the Flask class.
 # This starts the website!
@@ -40,10 +40,7 @@ app.register_blueprint(event, url_prefix='/api/v1/events/');
 
 
 # The default URL ends in / ("my-website.com/").
-@app.route('/')
 
-def index():
-    return 'hi'
 
 # Run the app when the program starts!
 if __name__ == '__main__':
