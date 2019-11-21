@@ -1,3 +1,8 @@
 {
-    "python.pythonPath": ".env/bin/python3.7"
+    "python.pythonPath": "/usr/local/bin/python3",
+    "cSpell.ignoreWords": [
+        "database",
+        "jsonify",
+        "sqlite"
+    ]
 }

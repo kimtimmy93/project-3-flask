@@ -2,14 +2,27 @@ from flask import Flask, g
 from flask_cors import CORS
 from resources.events import event
 
+from resources.events import event
+from resources.users import user
 import models
 
 DEBUG = True
 PORT = 8000
 
-# Initialize an instance of the Flask class.
-# This starts the website!
+login_manager = LoginManager()
+
+
 app = Flask(__name__)
+
+app.secret_key = "thissisthesecretkey"
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(userId):
+    try:
+        return models.User.get(models.User.id == userId)
+    except models.DoesNotExist:
+        return None
 
 @app.before_request
 def before_request():
