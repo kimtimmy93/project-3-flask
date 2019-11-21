@@ -45,7 +45,7 @@ def login():
         return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
-
+}
 # PROFILE
 # @user.route('/user/<username>', methods=["GET"])
 # @login_required
