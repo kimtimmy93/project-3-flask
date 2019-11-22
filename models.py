@@ -14,12 +14,12 @@ class User(UserMixin, Model):
         database = DATABASE
 
 class Event(Model):
-    sport = CharField() 
-    teams = CharField() 
-    date = CharField()
-    time = CharField()
-    location = CharField()
-    tickets = CharField()
+    title = CharField() 
+    venueNa = CharField() 
+    city = CharField()
+    # time = CharField()
+    # location = CharField()
+    # tickets = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
     
     class Meta: 
@@ -30,5 +30,6 @@ def initialize():
     DATABASE.create_tables([User, Event], safe=True) 
     print("TABLES Created")
     DATABASE.close()
+
 
     

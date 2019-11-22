@@ -29,6 +29,9 @@ def register():
 @user.route('/login', methods=["POST"])
 def login():
     payload = request.get_json()
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     login_user(username)
     try:
         user = models.User.get(models.User.username == payload['username'])
         user_dict = model_to_dict(user)
@@ -44,7 +47,7 @@ def login():
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
 
-# Logout
+# LOGOUT
 @user.route('/logout')
 @login_required
 def logout():
@@ -57,7 +60,6 @@ def logout():
 def profile_page(username):
     try:
         user = models.User.get(models.User.username == username)
-        print(user, '<---userrrr')
         return jsonify(data=model_to_dict(user), status={"code": 200, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "you must be logged in first"})
