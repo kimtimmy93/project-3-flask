@@ -9,7 +9,7 @@ class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField()
     is_admin = BooleanField(default=False)
-
+    my_events = [CharField()]
     class Meta:
         database = DATABASE
 

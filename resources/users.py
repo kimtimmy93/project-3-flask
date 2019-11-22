@@ -1,7 +1,7 @@
 import models
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, redirect, render_template, url_for
 from flask_bcrypt import generate_password_hash, check_password_hash
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, current_user,logout_user, login_required
 from playhouse.shortcuts import model_to_dict
 
 user = Blueprint('users', 'user')
@@ -60,9 +60,4 @@ def profile_page(username):
         print(user, '<---userrrr')
         return jsonify(data=model_to_dict(user), status={"code": 200, "message": "Success"})
     except models.DoesNotExist:
-        return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
-# PROFILE
-# @user.route('/user/<username>', methods=["GET"])
-# @login_required
-# def user(username):
-    # user = User.query.filter_by(username=username).first_or_404()
+        return jsonify(data={}, status={"code": 401, "message": "you must be logged in first"})

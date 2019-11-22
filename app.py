@@ -1,6 +1,6 @@
-from flask import Flask, g
+from flask import Flask, jsonify, g
 from flask_cors import CORS
-from resources.events import event
+from flask_login import LoginManager
 
 from resources.events import event
 from resources.users import user
@@ -37,23 +37,14 @@ def after_request(response):
     g.db.close()
     return response
 
-CORS(event, origins=['http://localhost:3000'], supports_credentials=True) # adding this line
-# CORS(user, origins=['http://localhost:3000'], supports_credentials=True) # adding this line
-#support credentials allows cookies to be sent to our api session
+CORS(event, origins=['http://localhost:3000'],
+supports_credentials=True)
 
-app.register_blueprint(event, url_prefix='/api/v1/events/');
-# app.register_blueprint(user, url_prefix='/api/v1/user/');
- # adding this line
+app.register_blueprint(event, url_prefix='/api/v1/events')
 
-
-
-
-
-
-
-
-# The default URL ends in / ("my-website.com/").
-
+CORS(user, origins=['http://localhost:3000'],
+supports_credentials=True)
+app.register_blueprint(user, url_prefix='/user')
 
 # Run the app when the program starts!
 if __name__ == '__main__':

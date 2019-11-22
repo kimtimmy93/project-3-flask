@@ -38,4 +38,9 @@ def update_event(id):
     event_dict = model_to_dict(event)
     return jsonify(data=event_dict, status={"code": 200, "message": "resource updated successfully"})
 
-#Update, Edit, Delete for admin only
+# Delete
+@event.route('/<id>', methods=["DELETE"])
+def delete_event(id):
+    query = models.Event.delete().where(models.Event.id==id)
+    query.execute()
+    return jsonify(data='resource successfully deleted', status={"code": 200, "message": "resource deleted successfully"})
