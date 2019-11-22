@@ -3,10 +3,10 @@ from flask import request, jsonify, Blueprint, redirect, render_template, url_fo
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import login_user, current_user,logout_user, login_required
 from playhouse.shortcuts import model_to_dict
+# playhouse is native to peewee
 
 user = Blueprint('users', 'user')
 
-# REGISTER
 @user.route('/register', methods=["POST"])
 def register():
     payload = request.get_json()
@@ -15,17 +15,18 @@ def register():
         models.User.get(models.User.username == payload['username'])
         return jsonify(data={}, status={"code": 401, "message": "username already attached to account"})
     except models.DoesNotExist:
-        payload['password'] = generate_password_hash(payload['password'])
-        user = models.User.create(**payload)
+        payload['password'] = generate_password_hash(payload['password']) # bcrypt line for generating the hash
+        user = models.User.create(**payload) # put the user in the database
 
-        login_user(user)
+        #login_user
+        login_user(user) # starts session
+
         user_dict = model_to_dict(user)
       
         del user_dict['password']
 
         return jsonify(data=user_dict, status={"code":201, "message": "Success"})
 
-# LOGIN
 @user.route('/login', methods=["POST"])
 def login():
     payload = request.get_json()
@@ -33,9 +34,9 @@ def login():
     # if form.validate_on_submit():
     #     login_user(username)
     try:
+        # Try find the user by their username
         user = models.User.get(models.User.username == payload['username'])
-        user_dict = model_to_dict(user)
-
+        user_dict = model_to_dict(user) # if you find the User model convert in to a dictionary so you can access it
         if(check_password_hash(user_dict['password'], payload['password'])):
             del user_dict['password']
             login_user(user)
