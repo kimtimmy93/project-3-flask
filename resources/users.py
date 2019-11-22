@@ -15,17 +15,22 @@ def register():
         models.User.get(models.User.username == payload['username'])
         return jsonify(data={}, status={"code": 401, "message": "username already attached to account"})
     except models.DoesNotExist:
-        payload['password'] = generate_password_hash(payload['password']) # bcrypt line for generating the hash
-        user = models.User.create(**payload) # put the user in the database
+        payload['password'] = generate_password_hash(payload['password']) 
+        user = models.User.create(**payload)
 
-        #login_user
-        login_user(user) # starts session
+     
+        login_user(user) 
+
+        print(current_user, '<--------------------------currentuser')
+        currentUser = model_to_dict(current_user) 
+        del currentUser["email"]
+        del currentUser["password"]
 
         user_dict = model_to_dict(user)
       
         del user_dict['password']
 
-        return jsonify(data=user_dict, status={"code":201, "message": "Success"})
+        return jsonify(data=user_dict, status={"code":201, "message": "Success"}, session=currentUser)
 
 @user.route('/login', methods=["POST"])
 def login():
@@ -40,9 +45,13 @@ def login():
         if(check_password_hash(user_dict['password'], payload['password'])):
             del user_dict['password']
             login_user(user)
+            currentUser = model_to_dict(current_user) 
+            del currentUser["email"]
+            del currentUser["password"]
+
             if(payload['username'] == 'admin'):
                 user_dict['is_admin'] = True
-            return jsonify(data=user_dict, status={"code": 200, "message": "user acquired"})
+            return jsonify(data=user_dict, status={"code": 200, "message": "user acquired"}, session=currentUser)
         else:
             return jsonify(data={}, status={"code": 401, "message": "username or password is incorrect"})
     except models.DoesNotExist:

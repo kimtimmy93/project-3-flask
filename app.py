@@ -6,7 +6,7 @@ from resources.users import user
 import models
 
 DEBUG = True
-PORT = 8000
+PORT = 8002
 
 login_manager = LoginManager()
 
