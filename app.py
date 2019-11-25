@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from resources.events import event
 from resources.users import user
 import models
+import os
 
 DEBUG = True
 PORT = 8002
@@ -48,17 +49,20 @@ def after_request(response):
     g.db.close()
     return response
 
-CORS(event, origins=['http://localhost:3000'],
+CORS(event, origins=['http://localhost:3000', 'http://local-la.herokuapp.com'],
 supports_credentials=True)
 
 app.register_blueprint(event, url_prefix='/api/v1/events')
 
-CORS(user, origins=['http://localhost:3000'],
+CORS(user, origins=['http://localhost:3000', 'http://local-la.herokuapp.com'],
 supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
 
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 if __name__ == '__main__':
- 
-    CORS(event, origins=['http://localhost:3000'], supports_credentials=True) 
+
+    CORS(event, origins=['http://localhost:3000', 'http://local-la.herokuapp.com'], supports_credentials=True) 
     models.initialize()
     app.run(debug=DEBUG, port=PORT)
