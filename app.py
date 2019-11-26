@@ -62,7 +62,6 @@ if 'ON_HEROKU' in os.environ:
     print('hitting ')
     models.initialize()
 if __name__ == '__main__':
- 
-    # CORS(event, origins=['http://localhost:3000'], supports_credentials=True) 
+ 2
     models.initialize()
     app.run(debug=DEBUG, port=PORT)
