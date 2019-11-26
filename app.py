@@ -3,7 +3,6 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from resources.events import event
 from resources.users import user
-from resources.userEvents import userEvent
 import models
 import os
 
@@ -14,16 +13,9 @@ login_manager = LoginManager()
 
 app = Flask(__name__)
 CORS(app)
-app.secret_key = "secret key"
+
+app.secret_key = "thissisthesecretkey"
 login_manager.init_app(app)
-
-CORS(event, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
-app.register_blueprint(event, url_prefix='/api/v1/events')
-CORS(user, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
-app.register_blueprint(user, url_prefix='/user')
-
-CORS(userEvent, origins=['http://localhost:3000'], supports_credentials=True)
-app.register_blueprint(userEvent, url_prefix='/userEvent')
 
 @login_manager.user_loader 
 def load_user(userId):
@@ -32,9 +24,6 @@ def load_user(userId):
     except models.DoesNotExist:
         return None
 
-app.secret_key = "thissisthesecretkey"
-login_manager.init_app(app)
-
 @app.before_request
 def before_request():
     g.db = models.DATABASE
@@ -42,13 +31,12 @@ def before_request():
 
 @app.after_request
 def after_request(response): 
-    """Close the database"""
+    """Close the database connection after each request."""
     g.db.close()
     return response
 
 CORS(event, origins=['http://localhost:3000', 'http://https://local-la.herokuapp.com/'],
 supports_credentials=True)
-
 app.register_blueprint(event, url_prefix='/api/v1/events')
 
 CORS(user, origins=['http://localhost:3000', 'http://https://local-la.herokuapp.com/'], 
@@ -58,7 +46,7 @@ app.register_blueprint(user, url_prefix='/user')
 if 'ON_HEROKU' in os.environ:
     print('hitting ')
     models.initialize()
+
 if __name__ == '__main__':
- 
     models.initialize()
     app.run(debug=DEBUG, port=PORT)
