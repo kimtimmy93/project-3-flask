@@ -3,11 +3,12 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from resources.events import event
 from resources.users import user
+from resources.userEvents import userEvent
 import models
 import os
 
 DEBUG = True
-PORT = 8000
+PORT = 8002
 
 login_manager = LoginManager()
 
@@ -21,6 +22,9 @@ app.register_blueprint(event, url_prefix='/api/v1/events')
 CORS(user, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
 
+CORS(userEvent, origins=['http://localhost:3000'], supports_credentials=True)
+app.register_blueprint(userEvent, url_prefix='/userEvent')
+
 @login_manager.user_loader 
 def load_user(userId):
     try:
@@ -30,13 +34,6 @@ def load_user(userId):
 
 app.secret_key = "thissisthesecretkey"
 login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(userId):
-    try:
-        return models.User.get(models.User.id == userId)
-    except models.DoesNotExist:
-        return None
 
 @app.before_request
 def before_request():
@@ -62,6 +59,6 @@ if 'ON_HEROKU' in os.environ:
     print('hitting ')
     models.initialize()
 if __name__ == '__main__':
- 2
+ 
     models.initialize()
     app.run(debug=DEBUG, port=PORT)

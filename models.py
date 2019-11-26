@@ -1,8 +1,12 @@
 from peewee import *
 import datetime
 from flask_login import UserMixin 
+<<<<<<< HEAD
+import random
+=======
 import os
 from playhouse.db_url import connect
+>>>>>>> master
 
 
 DATABASE = SqliteDatabase('events.sqlite')
@@ -15,8 +19,9 @@ class User(UserMixin, Model):
     password = CharField()
     is_admin = BooleanField(default=False)
 
-    class Meta: 
-        database  = DATABASE
+    class Meta:
+        database = DATABASE
+
 
 class Event(Model):
     title = CharField() 
@@ -26,14 +31,21 @@ class Event(Model):
     # location = CharField()
     # tickets = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
-    
-    class Meta: 
-        database = DATABASE
 
+    class Meta:
+        database = DATABASE
+    
+
+class UserEvent(Model):
+    user = ForeignKeyField(User)
+    event = CharField()
+
+    class Meta:
+        database = DATABASE
 
 def initialize(): 
     DATABASE.connect()
-    DATABASE.create_tables([User, Event], safe=True) 
+    DATABASE.create_tables([User, Event, UserEvent], safe=True) 
     print('TABLES Created')
     DATABASE.close()
 

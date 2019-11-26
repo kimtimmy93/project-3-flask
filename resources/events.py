@@ -43,4 +43,3 @@ def delete_event(id):
     query = models.Event.delete().where(models.Event.id==id)
     query.execute()
     return jsonify(data='resource successfully deleted', status={"code": 200, "message": "resource deleted successfully"})
-

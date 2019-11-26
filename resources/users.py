@@ -22,7 +22,7 @@ def register():
         login_user(user) # starts session
 
         user_dict = model_to_dict(user)
-      
+        print(user_dict)
         del user_dict['password']
 
         return jsonify(data=user_dict, status={"code":201, "message": "Success"})
@@ -57,8 +57,27 @@ def logout():
 @login_required
 def profile_page(username):
     try:
+        #temporary
         user = models.User.get(models.User.username == username)
         print(user, '<---userrrr')
-        return jsonify(data=model_to_dict(user), status={"code": 200, "message": "Success"})
+        return jsonify(data={}, status={"code": 401, "message": "username already exists"})
     except models.DoesNotExist:
-        return jsonify(data={}, status={"code": 401, "message": "you must be logged in first"})
+        ## login 
+        print('error')
+       
+#SAVE_EVENT
+
+@user.route('/<id>/my_events', methods=["PUT"])
+@login_required
+def my_events(id):
+    try: 
+        payload = request.get_json()
+        print(payload)
+        user = models.User.get_by_id(id)
+        user_dict = model_to_dict(user)
+        user_dict["my_events"].append(payload)
+        print(user_dict)
+        return jsonify(data={}, status={"code": 401, "message": "this is working"})
+    except models.DoesNotExist: 
+        print('error')
+
