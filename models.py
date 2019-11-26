@@ -1,18 +1,19 @@
 from peewee import *
 import datetime
 from flask_login import UserMixin 
-import os 
-from peewee.db_url import connect
+import os
+from playhouse.db_url import connect
+
 
 # DATABASE = SqliteDatabase('events.sqlite')
 DATABASE = connect(os.environ.get('DATABASE_URL'))
+
 
 class User(UserMixin, Model):
     username = CharField()
     email = CharField()
     password = CharField()
     is_admin = BooleanField(default=False)
-
 
     class Meta: 
         database  = DATABASE
