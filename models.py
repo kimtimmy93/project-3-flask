@@ -2,7 +2,7 @@ from peewee import *
 import datetime
 from flask_login import UserMixin 
 import os
-from playhouse.db_url import connect
+from peewee import connect
 
 
 # DATABASE = SqliteDatabase('events.sqlite')
