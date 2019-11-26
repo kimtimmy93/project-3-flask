@@ -5,6 +5,7 @@ from resources.events import event
 from resources.users import user
 from resources.userEvents import userEvent
 import models
+import os
 
 DEBUG = True
 PORT = 8002
@@ -16,10 +17,9 @@ CORS(app)
 app.secret_key = "secret key"
 login_manager.init_app(app)
 
-CORS(event, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(event, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(event, url_prefix='/api/v1/events')
-
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
 
 CORS(userEvent, origins=['http://localhost:3000'], supports_credentials=True)
@@ -46,7 +46,19 @@ def after_request(response):
     g.db.close()
     return response
 
+CORS(event, origins=['http://localhost:3000', 'http://https://local-la.herokuapp.com/'],
+supports_credentials=True)
+
+app.register_blueprint(event, url_prefix='/api/v1/events')
+
+CORS(user, origins=['http://localhost:3000', 'http://https://local-la.herokuapp.com/'], 
+supports_credentials=True)
+app.register_blueprint(user, url_prefix='/user')
+
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 if __name__ == '__main__':
-    CORS(event, origins=['http://localhost:3000'], supports_credentials=True) 
+ 
     models.initialize()
     app.run(debug=DEBUG, port=PORT)

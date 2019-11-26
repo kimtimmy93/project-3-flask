@@ -1,10 +1,17 @@
 from peewee import *
 import datetime
 from flask_login import UserMixin 
+<<<<<<< HEAD
 import random
+=======
+import os
+from playhouse.db_url import connect
+>>>>>>> master
 
 
 DATABASE = SqliteDatabase('events.sqlite')
+# DATABASE = connect(os.environ.get('DATABASE_URL'))
+
 
 class User(UserMixin, Model):
     username = CharField()
