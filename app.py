@@ -39,7 +39,7 @@ CORS(event, origins=['http://localhost:3000', 'http://https://local-la.herokuapp
 supports_credentials=True)
 app.register_blueprint(event, url_prefix='/api/v1/events')
 
-CORS(user, origins=['http://localhost:3000', 'http://https://local-la.herokuapp.com'], 
+CORS(user, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], 
 supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
 
