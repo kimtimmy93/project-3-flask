@@ -16,9 +16,9 @@ CORS(app)
 app.secret_key = "secret key"
 login_manager.init_app(app)
 
-CORS(event, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(event, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(event, url_prefix='/api/v1/events')
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000', 'https://local-la.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(user, url_prefix='/user')
 
 @login_manager.user_loader 
